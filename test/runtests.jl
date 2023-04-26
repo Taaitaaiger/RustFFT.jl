@@ -243,6 +243,7 @@ end
 @testset "Exceptions" begin
     planner64 = RustFFT.FftPlanner64()
 
+    GC.enable(false)
     @test_throws JlrsError begin
         instance = RustFFT.plan_fft_forward(planner64, UInt(2))
         data = [1.0 + 0.0im]
@@ -252,4 +253,5 @@ end
     @test_throws JlrsError begin
         RustFFT.plan_fft(planner64, :iversse, UInt(2))
     end
+    GC.enable(true)
 end
