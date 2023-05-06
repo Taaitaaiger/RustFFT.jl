@@ -9,6 +9,7 @@ rustfft_jll = "54eccfce-c43a-54d5-bb22-f204d2e1c97b"
 
 [compat]
 julia = "1.6"
+rustfft_jll = "0.0.2"
 
 [extras]
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
