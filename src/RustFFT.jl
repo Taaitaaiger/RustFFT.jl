@@ -1,5 +1,5 @@
 module RustFFT
-
+using JlrsCore
 import rustfft_jll: librustfft_path
 using JlrsCore.Wrap
 
