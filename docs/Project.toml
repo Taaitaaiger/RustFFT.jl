@@ -1,5 +1,2 @@
 [deps]
 RustFFT = "b7f167ac-9de6-40dd-9818-ec636999de39"
-
-[compat]
-JlrsCore = "0.1"
