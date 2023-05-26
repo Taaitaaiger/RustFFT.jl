@@ -1,5 +1,7 @@
 # RustFFT.jl
 
+[![](https://img.shields.io/badge/Documentation-dev-blue.svg)](https://taaitaaiger.github.io/RustFFT.jl/dev/)
+
 Compute FFTs in Julia using RustFFT. Some parts of this documentation have been quoted from the [RustFFT docs](https://docs.rs/rustfft/latest/rustfft/).
 
 > RustFFT is a high-performance, SIMD-accelerated FFT library written in pure Rust. It can compute FFTs of any size, including prime-number sizes, in O(nlogn) time.
