@@ -1,5 +1,7 @@
 module RustFFT
 using JlrsCore
+Main.JlrsCore = JlrsCore
+
 import rustfft_jll: librustfft_path
 using JlrsCore.Wrap
 
