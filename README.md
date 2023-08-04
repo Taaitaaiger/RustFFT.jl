@@ -57,7 +57,16 @@ RustFFT.jl: 0.2.0
 
 The benchmarks performed the following benchmark, with `j` ranging from 2 up to and including 128 in steps of 1, and from 256 up to and including 4096 in steps of 256:
 
-`@btime plan * data setup = (data = ones(ComplexF64, j); plan = plan_fft!(data))`
+```julia
+@btime plan * data setup = (data = ones(ComplexF64, j); plan = plan_fft!(data))
+```
+
+The unchecked results were collected with the following code:
+
+```julia
+const planner64 = new_planner(ComplexF64)
+@btime plan * data setup = (data = ones(ComplexF64, j); plan = plan_fft!(data; rustfft_checks=IgnoreArrayChecks(), rustfft_planner=planner64))
+```
 
 ### Runtime
 
