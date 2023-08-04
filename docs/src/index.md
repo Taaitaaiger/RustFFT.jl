@@ -14,14 +14,14 @@ Forward and inverse FFT:
 using RustFFT
 
 data = ones(ComplexF64, 1)
-fft!(instance, data)
+fft!(data)
 ```
 
 ```julia
 using RustFFT
 
 data = ones(ComplexF64, 1)
-ifft!(instance, data)
+ifft!(data)
 ```
 
 You can set several options by planning the FFT:
