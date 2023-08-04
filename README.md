@@ -67,6 +67,6 @@ The benchmarks performed the following benchmark, with `j` ranging from 2 up to 
 
 ![](./comparison_128.png)
 
-### `T_RustFFT / T_FFTW`
+#### `T_RustFFT / T_FFTW`
 
 ![](./comparison_ratio.png)
