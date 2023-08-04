@@ -38,3 +38,30 @@ plan * data
 ```
 
 It's currently not possible to choose the specific algorithm that will be used to compute the transform.
+
+## Benchmarks
+
+RustFFT has been benchmarked against FFTW on a PC with the following specs:
+
+OS: Ubuntu 22.04.2 LTS
+CPU: AMD Ryzen 5 3600
+RAM: 16GB
+Julia: 1.9.2
+FFTW.jl: 1.7.1
+RustFFT.jl: 0.2.0
+
+The benchmarks performed the following benchmark, with `j` ranging from 2 up to and including 128 in steps of 1, and from 256 up to and including 4096 in steps of 256:
+
+`@btime plan * data setup = (data = ones(ComplexF64, j); plan = plan_fft!(data))`
+
+Runtime:
+
+![](./comparison.png)
+
+First 128 entries:
+
+![](./comparison_128.png)
+
+`T_RustFFT / T_FFTW`:
+
+![](./comparison_ratio.png)
