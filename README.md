@@ -8,32 +8,33 @@ Compute FFTs in Julia using RustFFT. Some parts of this documentation have been 
 
 ## Usage
 
-Forward FFT:
+RustFFT.jl implements the generic FFT interface of [AbstractFFTs.jl](https://juliamath.github.io/AbstractFFTs.jl/stable/api/#Public-Interface-1) but only supports one-dimensional, complex-valued arrays: `Vector{ComplexF64}` and `Vector{ComplexF32}`.
+
+Forward and inverse FFT:
 
 ```julia
 using RustFFT
 
-planner64 = RustFFT.FftPlanner64()
-instance = RustFFT.plan_fft_forward(planner64, UInt(1))
-data = complex([1.0])
-RustFFT.fft!(instance, data)
-@assert data[1] ≈ 1.0
+data = ones(ComplexF64, 1)
+fft!(instance, data)
 ```
-
-Inverse FFT:
 
 ```julia
 using RustFFT
 
-planner64 = RustFFT.FftPlanner64()
-instance = RustFFT.plan_fft_inverse(planner64, UInt(1))
-data = complex([1.0])
-RustFFT.fft!(instance, data)
-@assert data[1] ≈ 1.0
+data = ones(ComplexF64, 1)
+ifft!(instance, data)
 ```
 
-Note that RustFFT does not normalize outputs:
+You can set several options by planning the FFT:
 
-> Callers must manually normalize the results by scaling each element by `1/len().sqrt()`. Multiple normalization steps can be merged into one via pairwise multiplication, so when doing a forward FFT followed by an inverse callers can normalize once by scaling each element by `1/len()`
+```julia
+using RustFFT
+
+planner = new_planner(ComplexF64)
+data = ones(ComplexF64, 1)
+plan = plan_fft!(data; rustfft_checks=IgnoreArrayChecks(), rustfft_gcsafe=GcSafe(), rustfft_planner=planner)
+plan * data
+```
 
 It's currently not possible to choose the specific algorithm that will be used to compute the transform.

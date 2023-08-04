@@ -1,255 +1,68 @@
 using Test
 using RustFFT
+using JlrsCore: JlrsError
+
+using AbstractFFTs
 
 @testset "Forward FFT" begin
-    planner64 = RustFFT.FftPlanner64()
-    planner32 = RustFFT.FftPlanner32()
-
     @test begin
-        instance = RustFFT.plan_fft_forward(planner64, UInt(1))
-        data = [1.0 + 0.0im]
-        RustFFT.fft!(instance, data)
+        data = ones(ComplexF64, 1)
+        fft!(data)
         data[1] ≈ 1.0
     end
 
     @test begin
-        instance = RustFFT.plan_fft_forward(planner64, UInt(2))
-        data = [1.0 + 0.0im; 1.0 + 0.0im]
-        RustFFT.fft!(instance, data)
+        data = ones(ComplexF64, 2)
+        fft!(data)
         data[1] ≈ 2.0 && data[2] ≈ 0.0
     end
 
     @test begin
-        instance = RustFFT.plan_fft_forward(planner32, UInt(1))
-        data = [ComplexF32(1.0)]
-        RustFFT.fft!(instance, data)
+        data = ones(ComplexF32, 1)
+        fft!(data)
         data[1] ≈ 1.0
     end
 
     @test begin
-        instance = RustFFT.plan_fft_forward(planner32, UInt(2))
-        data = [ComplexF32(1.0); ComplexF32(1.0)]
-        RustFFT.fft!(instance, data)
-        data[1] ≈ 2.0 && data[2] ≈ 0.0
-    end
-
-    @test begin
-        instance = RustFFT.plan_fft(planner64, :forward, UInt(1))
-        data = [1.0 + 0.0im]
-        RustFFT.fft!(instance, data)
-        data[1] ≈ 1.0
-    end
-
-    @test begin
-        instance = RustFFT.plan_fft(planner64, :forward, UInt(2))
-        data = [1.0 + 0.0im; 1.0 + 0.0im]
-        RustFFT.fft!(instance, data)
-        data[1] ≈ 2.0 && data[2] ≈ 0.0
-    end
-
-    @test begin
-        instance = RustFFT.plan_fft(planner32, :forward, UInt(1))
-        data = [ComplexF32(1.0)]
-        RustFFT.fft!(instance, data)
-        data[1] ≈ 1.0
-    end
-
-    @test begin
-        instance = RustFFT.plan_fft(planner32, :forward, UInt(2))
-        data = [ComplexF32(1.0); ComplexF32(1.0)]
-        RustFFT.fft!(instance, data)
+        data = ones(ComplexF32, 2)
+        fft!(data)
         data[1] ≈ 2.0 && data[2] ≈ 0.0
     end
 end
 
 @testset "Inverse FFT" begin
-    planner64 = RustFFT.FftPlanner64()
-    planner32 = RustFFT.FftPlanner32()
-
     @test begin
-        instance = RustFFT.plan_fft_inverse(planner64, UInt(1))
-        data = [1.0 + 0.0im]
-        RustFFT.fft!(instance, data)
+        data = ones(ComplexF64, 1)
+        bfft!(data)
         data[1] ≈ 1.0
     end
 
     @test begin
-        instance = RustFFT.plan_fft_inverse(planner64, UInt(2))
-        data = [1.0 + 0.0im; 0.0 + 0.0im]
-        RustFFT.fft!(instance, data)
+        data = [one(ComplexF64), zero(ComplexF64)]
+        bfft!(data)
         data[1] ≈ 1.0 && data[2] ≈ 1.0
     end
 
     @test begin
-        instance = RustFFT.plan_fft_inverse(planner32, UInt(1))
-        data = [ComplexF32(1.0)]
-        RustFFT.fft!(instance, data)
+        data = ones(ComplexF32, 1)
+        bfft!(data)
         data[1] ≈ 1.0
     end
 
     @test begin
-        instance = RustFFT.plan_fft_inverse(planner32, UInt(2))
-        data = [ComplexF32(1.0); ComplexF32(0.0)]
-        RustFFT.fft!(instance, data)
-        data[1] ≈ 1.0 && data[2] ≈ 1.0
-    end
-
-    @test begin
-        instance = RustFFT.plan_fft(planner64, :inverse, UInt(1))
-        data = [1.0 + 0.0im]
-        RustFFT.fft!(instance, data)
-        data[1] ≈ 1.0
-    end
-
-    @test begin
-        instance = RustFFT.plan_fft(planner64, :inverse, UInt(2))
-        data = [1.0 + 0.0im; 0.0 + 0.0im]
-        RustFFT.fft!(instance, data)
-        data[1] ≈ 1.0 && data[2] ≈ 1.0
-    end
-
-    @test begin
-        instance = RustFFT.plan_fft(planner32, :inverse, UInt(1))
-        data = [ComplexF32(1.0)]
-        RustFFT.fft!(instance, data)
-        data[1] ≈ 1.0
-    end
-
-    @test begin
-        instance = RustFFT.plan_fft(planner32, :inverse, UInt(2))
-        data = [ComplexF32(1.0); ComplexF32(0.0)]
-        RustFFT.fft!(instance, data)
-        data[1] ≈ 1.0 && data[2] ≈ 1.0
-    end
-end
-
-@testset "Async FFT" begin
-    planner64 = RustFFT.FftPlanner64()
-    planner32 = RustFFT.FftPlanner32()
-
-    @test begin
-        instance = RustFFT.plan_fft_forward(planner64, UInt(1))
-        data = [1.0 + 0.0im]
-        RustFFT.fft_async!(instance, data)
-        data[1] ≈ 1.0
-    end
-
-    @test begin
-        instance = RustFFT.plan_fft_forward(planner64, UInt(2))
-        data = [1.0 + 0.0im; 1.0 + 0.0im]
-        RustFFT.fft_async!(instance, data)
-        data[1] ≈ 2.0 && data[2] ≈ 0.0
-    end
-
-    @test begin
-        instance = RustFFT.plan_fft_forward(planner32, UInt(1))
-        data = [ComplexF32(1.0)]
-        RustFFT.fft_async!(instance, data)
-        data[1] ≈ 1.0
-    end
-
-    @test begin
-        instance = RustFFT.plan_fft_forward(planner32, UInt(2))
-        data = [ComplexF32(1.0); ComplexF32(1.0)]
-        RustFFT.fft_async!(instance, data)
-        data[1] ≈ 2.0 && data[2] ≈ 0.0
-    end
-
-    @test begin
-        instance = RustFFT.plan_fft(planner64, :forward, UInt(1))
-        data = [1.0 + 0.0im]
-        RustFFT.fft_async!(instance, data)
-        data[1] ≈ 1.0
-    end
-
-    @test begin
-        instance = RustFFT.plan_fft(planner64, :forward, UInt(2))
-        data = [1.0 + 0.0im; 1.0 + 0.0im]
-        RustFFT.fft_async!(instance, data)
-        data[1] ≈ 2.0 && data[2] ≈ 0.0
-    end
-
-    @test begin
-        instance = RustFFT.plan_fft(planner32, :forward, UInt(1))
-        data = [ComplexF32(1.0)]
-        RustFFT.fft_async!(instance, data)
-        data[1] ≈ 1.0
-    end
-
-    @test begin
-        instance = RustFFT.plan_fft(planner32, :forward, UInt(2))
-        data = [ComplexF32(1.0); ComplexF32(1.0)]
-        RustFFT.fft_async!(instance, data)
-        data[1] ≈ 2.0 && data[2] ≈ 0.0
-    end
-
-    @test begin
-        instance = RustFFT.plan_fft_inverse(planner64, UInt(1))
-        data = [1.0 + 0.0im]
-        RustFFT.fft_async!(instance, data)
-        data[1] ≈ 1.0
-    end
-
-    @test begin
-        instance = RustFFT.plan_fft_inverse(planner64, UInt(2))
-        data = [1.0 + 0.0im; 0.0 + 0.0im]
-        RustFFT.fft_async!(instance, data)
-        data[1] ≈ 1.0 && data[2] ≈ 1.0
-    end
-
-    @test begin
-        instance = RustFFT.plan_fft_inverse(planner32, UInt(1))
-        data = [ComplexF32(1.0)]
-        RustFFT.fft_async!(instance, data)
-        data[1] ≈ 1.0
-    end
-
-    @test begin
-        instance = RustFFT.plan_fft_inverse(planner32, UInt(2))
-        data = [ComplexF32(1.0); ComplexF32(0.0)]
-        RustFFT.fft_async!(instance, data)
-        data[1] ≈ 1.0 && data[2] ≈ 1.0
-    end
-
-    @test begin
-        instance = RustFFT.plan_fft(planner64, :inverse, UInt(1))
-        data = [1.0 + 0.0im]
-        RustFFT.fft_async!(instance, data)
-        data[1] ≈ 1.0
-    end
-
-    @test begin
-        instance = RustFFT.plan_fft(planner64, :inverse, UInt(2))
-        data = [1.0 + 0.0im; 0.0 + 0.0im]
-        RustFFT.fft_async!(instance, data)
-        data[1] ≈ 1.0 && data[2] ≈ 1.0
-    end
-
-    @test begin
-        instance = RustFFT.plan_fft(planner32, :inverse, UInt(1))
-        data = [ComplexF32(1.0)]
-        RustFFT.fft_async!(instance, data)
-        data[1] ≈ 1.0
-    end
-
-    @test begin
-        instance = RustFFT.plan_fft(planner32, :inverse, UInt(2))
-        data = [ComplexF32(1.0); ComplexF32(0.0)]
-        RustFFT.fft_async!(instance, data)
+        data = [one(ComplexF32), zero(ComplexF32)]
+        bfft!(data)
         data[1] ≈ 1.0 && data[2] ≈ 1.0
     end
 end
 
 @testset "Exceptions" begin
-    planner64 = RustFFT.FftPlanner64()
-
     @test_throws JlrsError begin
-        instance = RustFFT.plan_fft_forward(planner64, UInt(2))
-        data = [1.0 + 0.0im]
-        RustFFT.fft!(instance, data)
-    end
-
-    @test_throws JlrsError begin
-        RustFFT.plan_fft(planner64, :iversse, UInt(2))
+        longer = ones(ComplexF64, 2)
+        plan = plan_fft(longer)
+        plan * ones(ComplexF64, 1)
     end
 end
+
+# Fails because RustFFT only supports 1D data.
+# AbstractFFTs.TestUtils.test_complex_ffts(Vector{ComplexF32}; test_adjoint=false)
