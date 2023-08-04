@@ -63,7 +63,7 @@ The benchmarks performed the following benchmark, with `j` ranging from 2 up to 
 
 ![](./comparison.png)
 
-###Zooming in on the first 128 entries
+### Zooming in on the first 128 entries
 
 ![](./comparison_128.png)
 
