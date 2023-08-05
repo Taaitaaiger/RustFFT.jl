@@ -45,9 +45,9 @@ RustFFT has been benchmarked against FFTW on a PC with the following specs:
 
 OS: Ubuntu 22.04.2 LTS
 
-CPU: AMD Ryzen 5 3600
+CPU: Intel Core i7-12700H
 
-RAM: 16GB
+RAM: 32GB
 
 Julia: 1.9.2
 
